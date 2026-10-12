@@ -1,0 +1,8 @@
+# Local tooling state (design-check plugin cache and settings, browser test output)
+.impeccable/
+.playwright-mcp/
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
