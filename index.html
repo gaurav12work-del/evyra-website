@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Avyra Stays | Boutique homes near IIM Bangalore</title>
-  <meta name="description" content="Three warm, Superhost-run homes off Bannerghatta Road, near IIM Bangalore and Christ University: a private suite, a 1BHK and a 2BHK, rated 5.0 by every guest.">
-  <meta name="theme-color" content="#faf6f0">
+  <title>Avyra Stays | Calm homes near IIM Bangalore</title>
+  <meta name="description" content="Three cared-for homes off Bannerghatta Road, Bengaluru, near IIM Bangalore: a private suite, a 1BHK and a 2BHK, run by a Superhost and rated 5.0 by every guest.">
+  <meta name="theme-color" content="#2f3a1c">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Avyra Stays | Boutique homes near IIM Bangalore">
+  <meta property="og:title" content="Avyra Stays | Calm homes near IIM Bangalore">
   <meta property="og:description" content="A private suite, a 1BHK and a 2BHK off Bannerghatta Road, Bengaluru. Rated 5.0 by every guest on Airbnb.">
-  <meta property="og:image" content="assets/img/og-image.jpg">
+  <!-- Link previews need a full address; switch it to the custom domain once one is attached -->
+  <meta property="og:image" content="https://avyra-stays.netlify.app/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Private Suite in the evening, lit by a bedside lamp">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="assets/logo/favicon-48.png" sizes="48x48" type="image/png">
@@ -18,12 +22,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400..700;1,400..600&family=Hanken+Grotesk:wght@300..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..600&family=Hanken+Grotesk:wght@300..700&display=swap">
 
   <link rel="preload" as="image" href="assets/logo/avyra-logo-cream.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/img/o13-720.webp" imagesrcset="assets/img/o13-720.webp 720w, assets/img/o13-1440.webp 1440w" imagesizes="(min-width: 56em) 34vw, 86vw" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/r10-1440.webp" imagesrcset="assets/img/r10-720.webp 720w, assets/img/r10-1440.webp 1440w, assets/img/r10-1920.webp 1920w" imagesizes="(max-aspect-ratio: 3/4) 75vh, 100vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/vendor/lenis.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- ?v= changes with each release, so browsers never keep showing an older copy -->
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261020d">
 
   <script>
     document.documentElement.classList.add('js');
@@ -36,11 +41,12 @@
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
     "name": "Avyra Stays",
-    "description": "Boutique homes near IIM Bangalore and Christ University, off Bannerghatta Road.",
+    "description": "Three cared-for homes off Bannerghatta Road, near IIM Bangalore.",
     "address": { "@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN" },
-    "image": "assets/img/og-image.jpg",
-    "logo": "assets/logo/avyra-logo.png",
-    "sameAs": ["https://www.airbnb.co.in/users/profile/1665990169283853064"]
+    "priceRange": "₹1,800–₹3,100 per night",
+    "image": "https://avyra-stays.netlify.app/assets/img/og-image.jpg",
+    "logo": "https://avyra-stays.netlify.app/assets/logo/avyra-logo.png",
+    "sameAs": ["https://www.airbnb.co.in/users/show/757101255"]
   }
   </script>
 </head>
@@ -56,467 +62,261 @@
         <img class="preloader__logo-fill" src="assets/logo/avyra-logo-cream.webp" width="800" height="265" alt="">
       </div>
     </div>
-    <span class="preloader__count">0</span>
     <span class="preloader__bar"><span></span></span>
   </div>
 
+  <!-- Light over the cover photo; becomes a cream bar once the page scrolls past it -->
   <header class="nav" data-nav>
     <div class="nav__inner">
       <a class="nav__brand" href="#top" aria-label="Avyra Stays, back to top">
-        <img class="nav__logo" src="assets/logo/avyra-logo.webp" width="480" height="159" alt="">
+        <img class="nav__logo nav__logo--light" src="assets/logo/avyra-logo-cream.webp" width="800" height="265" alt="">
+        <img class="nav__logo nav__logo--dark" src="assets/logo/avyra-logo.webp" width="480" height="159" alt="">
       </a>
-      <nav class="nav__links" aria-label="Main">
-        <a href="#homes">Homes</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#neighbourhood">Neighbourhood</a>
-        <a href="#contact">Contact</a>
+      <nav class="nav__menu" aria-label="Main">
+        <a class="nav__link" href="#homes">Homes</a>
+        <a class="nav__link" href="#reviews">Reviews</a>
+        <a class="nav__link" href="#location">Location</a>
+        <a class="btn btn--sm nav__cta" href="#contact" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire</span></a>
       </nav>
-      <a class="btn btn--primary btn--sm nav__cta" href="#contact" data-magnetic><span class="btn__label">Enquire</span></a>
-      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
-        <span class="nav__toggle-line"></span>
-        <span class="nav__toggle-line"></span>
-      </button>
     </div>
   </header>
 
-  <div class="menu" id="menu" hidden>
-    <nav class="menu__links" aria-label="Menu">
-      <a class="menu__link" href="#homes"><span>Homes</span></a>
-      <a class="menu__link" href="#reviews"><span>Reviews</span></a>
-      <a class="menu__link" href="#neighbourhood"><span>Neighbourhood</span></a>
-      <a class="menu__link" href="#good-to-know"><span>Good to know</span></a>
-      <a class="menu__link" href="#contact"><span>Contact</span></a>
-    </nav>
-    <div class="menu__foot">
-      <a data-contact="phone" data-keep-text href="#contact">Call us</a>
-      <a data-contact="email" data-keep-text href="#contact">Email us</a>
-    </div>
-  </div>
-
   <main id="main" tabindex="-1">
 
-    <!-- ============ Hero: the masthead, like a magazine cover ============ -->
-    <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="masthead" aria-hidden="true">
-        <span class="masthead__letter">A</span><span class="masthead__letter">V</span><span class="masthead__letter">Y</span><span class="masthead__letter">R</span><span class="masthead__letter">A</span>
-      </div>
+    <!-- The cover holds still while the welcome note slides up over it -->
+    <div class="opening">
 
-      <div class="hero__row">
-        <div class="hero__intro">
-          <h1 class="hero__title" id="hero-title">Warm, quiet homes near IIM Bangalore</h1>
-          <p class="hero__text" data-hero-fade>Designed for calm, kept spotless and looked after by a Superhost who replies within the hour. Every guest so far has rated their stay five stars.</p>
-          <div class="hero__cta" data-hero-fade>
-            <a class="btn btn--primary" href="#contact" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire about a stay</span></a>
-          </div>
+      <!-- ============ Cover ============ -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__media">
+          <img class="hero__img" src="assets/img/r10-1440.webp" srcset="assets/img/r10-720.webp 720w, assets/img/r10-1440.webp 1440w, assets/img/r10-1920.webp 1920w" sizes="(max-aspect-ratio: 3/4) 75vh, 100vw" width="1440" height="1920" fetchpriority="high" decoding="async" alt="The Private Suite in the evening: a bedside lamp glowing beside a bed in grey linen, with a honey-wood wardrobe and sheer curtains">
         </div>
 
-        <div class="hero__figure">
-          <div class="hero__cover">
-            <img src="assets/img/o13-720.webp" srcset="assets/img/o13-720.webp 720w, assets/img/o13-1440.webp 1440w" sizes="(min-width: 56em) 34vw, 86vw" width="720" height="960" fetchpriority="high" decoding="async" alt="Bedroom in the 1BHK Apartment: a queen bed in grey linen beneath three framed prints, with a floor lamp and pampas grass">
-          </div>
-          <div class="seal" aria-hidden="true">
-            <svg viewBox="0 0 200 200">
-              <defs><path id="seal-ring" d="M100 100m-76 0a76 76 0 1 1 152 0a76 76 0 1 1-152 0"/></defs>
-              <text><textPath href="#seal-ring" textLength="470" lengthAdjust="spacing">Guest favourite ✦ Superhost ✦ 24 reviews ✦</textPath></text>
-            </svg>
-            <span class="seal__score">5.0</span>
+        <div class="container hero__content">
+          <!-- Lines are set by hand so the intro can raise each one from its own mask -->
+          <h1 class="hero__title" id="hero-title">
+            <span class="hero__line"><span class="hero__line-inner">A calm place</span></span>
+            <span class="hero__line"><span class="hero__line-inner">to stay near</span></span>
+            <span class="hero__line"><span class="hero__line-inner">IIM Bangalore</span></span>
+          </h1>
+
+          <div class="hero__foot">
+            <p class="hero__text" data-hero-fade>Three cared-for homes off Bannerghatta Road, run by a Superhost and rated 5.0 by every guest.</p>
+            <a class="btn btn--light btn--lg" href="#homes" data-hero-fade data-magnetic><span class="btn__label">See the homes</span></a>
           </div>
         </div>
+      </section>
 
-        <nav class="hero__index" aria-label="Our homes" data-hero-fade>
-          <p class="hero__index-title">The homes</p>
-          <a href="#suite"><span class="hero__index-name">The Private Suite</span><span class="hero__index-meta">Sleeps 2</span></a>
-          <a href="#one-bhk"><span class="hero__index-name">The 1BHK Apartment</span><span class="hero__index-meta">Sleeps 2</span></a>
-          <a href="#two-bhk"><span class="hero__index-name">The 2BHK Home</span><span class="hero__index-meta">Sleeps 4</span></a>
-        </nav>
-      </div>
-    </section>
+      <!-- ============ Welcome: what every Avyra home is like ============ -->
+      <section class="welcome" id="about" aria-label="About Avyra Stays">
+        <div class="container welcome__grid">
+          <p class="welcome__statement" data-words>Honey-toned wood, soft lamplight, fresh linen and nothing out of place. Every Avyra home is kept simple and spotless, and calm from the moment you open the door.</p>
 
-    <!-- ============ About ============ -->
-    <section class="about" id="about" aria-label="About Avyra">
-      <div class="container about__grid">
-        <div class="about__copy">
-          <p class="about__statement" data-scrub>Avyra began with a traveller’s wish for somewhere that feels calm the moment the door opens. So each home is kept simple and spotless, warmed by honey-toned wood, soft lamplight and fresh linen, with a host who is always just a call away.</p>
-          <a class="link about__link" href="#host">Meet your host</a>
-        </div>
-        <div class="about__media">
-          <figure class="frame about__img about__img--main" data-reveal>
-            <img data-parallax="7" src="assets/img/o02-720.webp" srcset="assets/img/o02-720.webp 720w, assets/img/o02-1440.webp 1440w" sizes="(min-width: 56em) 32vw, 80vw" width="720" height="960" loading="lazy" decoding="async" alt="A dark sofa beside linen curtains, with pampas grass in a white vase on a wooden coffee table">
-          </figure>
-          <figure class="frame about__img about__img--inset" data-reveal>
-            <img data-parallax="8" src="assets/img/r13-720.webp" srcset="assets/img/r13-720.webp 720w, assets/img/r13-1440.webp 1440w" sizes="(min-width: 56em) 16vw, 44vw" width="720" height="960" loading="lazy" decoding="async" alt="A lit candle in a glass jar beside a potted plant">
+          <figure class="welcome__photo" data-reveal>
+            <img data-parallax src="assets/img/r13-720.webp" srcset="assets/img/r13-720.webp 720w, assets/img/r13-1440.webp 1440w" sizes="(min-width: 56em) 24vw, 60vw" width="720" height="960" loading="lazy" decoding="async" alt="A lit candle in a glass jar beside a potted plant">
           </figure>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <!-- ============ The homes ============ -->
+    <!-- ============ The homes: on wide screens each one slides up over the last ============ -->
     <section class="homes" id="homes" aria-labelledby="homes-title">
       <div class="container homes__head">
-        <h2 class="section-title homes__title" id="homes-title" data-split>Three homes, one way of hosting</h2>
-        <p class="homes__intro">A private suite for one or two, a 1BHK to yourselves, or a 2BHK with room for four. All three are close to IIM Bangalore and Christ University, and all are cared for the same way.</p>
+        <h2 class="section-title" id="homes-title" data-split>Three homes, one way of hosting</h2>
+        <p class="homes__intro">Each one is fully furnished, kept spotless and a few minutes from IIM Bangalore. All three are Guest favourites on Airbnb.</p>
       </div>
 
-      <!-- Home 1: Private Suite -->
-      <article class="home container" id="suite" aria-labelledby="suite-title">
-        <div class="home__info">
-          <div class="home__sticky">
-            <h3 class="home__name" id="suite-title" data-split>The Private Suite</h3>
-            <p class="home__lead">Warm and stylish, with a bedroom and bathroom of your own.</p>
-            <dl class="specs">
-              <div><dt>Guests</dt><dd>Up to 2</dd></div>
-              <div><dt>Bed</dt><dd>1 queen</dd></div>
-              <div><dt>Bathroom</dt><dd>Attached</dd></div>
-            </dl>
-            <p class="home__desc">A designer suite bathed in warm light, with a cozy, minimalist feel. You get the bedroom, an attached bathroom and a private living area, plus a kitchenette and a desk. Good for work trips or a weekend recharge.</p>
-            <p class="rating"><svg class="rating__star" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2l1.9 4.3 4.7.4-3.6 3.1 1.1 4.6L8 11.2l-4.1 2.4 1.1-4.6L1.4 5.9l4.7-.4z"/></svg><strong>5.0</strong> from 11 reviews</p>
-            <div class="home__actions">
-              <a class="btn btn--primary" href="#contact" data-enquire="suite" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire about the suite</span></a>
-              <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1665990167777255737" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+      <div class="stack">
+        <!-- Home 1: Private Suite -->
+        <article class="home" id="suite" aria-labelledby="suite-name">
+          <div class="home__inner">
+            <button class="home__media" type="button" data-gallery="suite" data-index="8" data-cursor="View" aria-label="View all 14 photos of the Private Suite">
+              <span class="home__zoom"><img src="assets/img/r09-720.webp" srcset="assets/img/r09-720.webp 720w, assets/img/r09-1440.webp 1440w" sizes="(min-width: 64em) 58vw, (min-width: 40em) 46vw, 92vw" width="720" height="720" loading="lazy" decoding="async" alt=""></span>
+              <span class="home__count"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-photos"/></svg>14 photos</span>
+            </button>
+            <div class="home__body">
+              <h3 class="home__name" id="suite-name">The Private Suite</h3>
+              <p class="home__lead">Warm and stylish, with a bedroom and bathroom of your own.</p>
+              <ul class="home__facts" role="list">
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bed"/></svg>1 queen bed</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-guests"/></svg>Sleeps 2</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bath"/></svg>Private bathroom</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-star"/></svg>5.0 from 11 reviews</li>
+              </ul>
+              <div class="price">
+                <p class="price__item"><span class="price__label">Starting at</span><span class="price__value"><strong>₹1,800</strong> / night</span></p>
+                <p class="price__item price__note">Ask us about monthly stays</p>
+              </div>
+              <div class="home__actions">
+                <a class="btn" href="#contact" data-enquire="The Private Suite" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire</span></a>
+                <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1665990167777255737" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+              </div>
             </div>
+            <span class="home__shade" aria-hidden="true"></span>
           </div>
-        </div>
-        <div class="home__gallery" data-cursor="View">
-          <button class="shot shot--a" type="button" data-gallery="suite" data-index="9" aria-label="Open photos of the Private Suite: bedroom">
-            <img src="assets/img/r10-720.webp" srcset="assets/img/r10-720.webp 720w, assets/img/r10-1440.webp 1440w" sizes="(min-width: 56em) 36vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Bedroom with a queen bed in grey linen, a glowing bedside lamp and a honey-wood wardrobe">
-          </button>
-          <button class="shot shot--b" type="button" data-gallery="suite" data-index="8" aria-label="Open photos of the Private Suite: bedside">
-            <img src="assets/img/r09-720.webp" srcset="assets/img/r09-720.webp 720w, assets/img/r09-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="720" loading="lazy" decoding="async" alt="A sculpted white lamp on the bedside table">
-          </button>
-          <button class="shot shot--c" type="button" data-gallery="suite" data-index="3" aria-label="Open photos of the Private Suite: living area">
-            <img src="assets/img/r04-720.webp" srcset="assets/img/r04-720.webp 720w, assets/img/r04-1440.webp 1440w" sizes="(min-width: 56em) 27vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Living area with cream sofas, a round coffee table, potted plants and a television">
-          </button>
-          <button class="shot shot--d" type="button" data-gallery="suite" data-index="11" aria-label="Open photos of the Private Suite: bathroom">
-            <img src="assets/img/r12-720.webp" srcset="assets/img/r12-720.webp 720w, assets/img/r12-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Clean white-tiled bathroom with a rain shower">
-          </button>
-          <button class="home__all link" type="button" data-gallery="suite" data-index="0">View all 14 photos</button>
-        </div>
-      </article>
+        </article>
 
-      <!-- Home 2: 1BHK Apartment -->
-      <article class="home home--flip container" id="one-bhk" aria-labelledby="one-title">
-        <div class="home__info">
-          <div class="home__sticky">
-            <h3 class="home__name" id="one-title" data-split>The 1BHK Apartment</h3>
-            <p class="home__lead">Bright and cozy, and entirely yours.</p>
-            <dl class="specs">
-              <div><dt>Guests</dt><dd>Up to 2</dd></div>
-              <div><dt>Bed</dt><dd>1 queen</dd></div>
-              <div><dt>Bathroom</dt><dd>1</dd></div>
-            </dl>
-            <p class="home__desc">Sleek, modern and full of daylight, with an upscale boutique feel. A comfortable bedroom, an inviting living room and a full kitchen with an induction cooker, blender and kettle. Made for couples, solo travellers, business trips and longer stays.</p>
-            <p class="home__note">On the second floor, reached by stairs.</p>
-            <p class="rating"><svg class="rating__star" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2l1.9 4.3 4.7.4-3.6 3.1 1.1 4.6L8 11.2l-4.1 2.4 1.1-4.6L1.4 5.9l4.7-.4z"/></svg><strong>5.0</strong> from 5 reviews</p>
-            <div class="home__actions">
-              <a class="btn btn--primary" href="#contact" data-enquire="one" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire about the 1BHK</span></a>
-              <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1775228272716220847" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <!-- Home 2: 1BHK Apartment -->
+        <article class="home" id="one-bhk" aria-labelledby="one-name">
+          <div class="home__inner">
+            <button class="home__media" type="button" data-gallery="one" data-index="12" data-cursor="View" aria-label="View all 26 photos of the 1BHK Apartment">
+              <span class="home__zoom"><img src="assets/img/o13-720.webp" srcset="assets/img/o13-720.webp 720w, assets/img/o13-1440.webp 1440w" sizes="(min-width: 64em) 58vw, (min-width: 40em) 46vw, 92vw" width="720" height="960" loading="lazy" decoding="async" alt=""></span>
+              <span class="home__count"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-photos"/></svg>26 photos</span>
+            </button>
+            <div class="home__body">
+              <h3 class="home__name" id="one-name">The 1BHK Apartment</h3>
+              <p class="home__lead">Bright and cozy, and entirely yours.</p>
+              <ul class="home__facts" role="list">
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bed"/></svg>1 bedroom</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-guests"/></svg>Sleeps 2</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bath"/></svg>1 bathroom</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-star"/></svg>5.0 from 5 reviews</li>
+              </ul>
+              <div class="price">
+                <p class="price__item"><span class="price__label">Starting at</span><span class="price__value"><strong>₹1,800</strong> / night</span></p>
+                <p class="price__item price__note">Ask us about monthly stays</p>
+              </div>
+              <div class="home__actions">
+                <a class="btn" href="#contact" data-enquire="The 1BHK Apartment" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire</span></a>
+                <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1775228272716220847" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+              </div>
             </div>
+            <span class="home__shade" aria-hidden="true"></span>
           </div>
-        </div>
-        <div class="home__gallery" data-cursor="View">
-          <button class="shot shot--a" type="button" data-gallery="one" data-index="3" aria-label="Open photos of the 1BHK Apartment: living room">
-            <img src="assets/img/o04-720.webp" srcset="assets/img/o04-720.webp 720w, assets/img/o04-1440.webp 1440w" sizes="(min-width: 56em) 36vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Living room with a dark sofa, a wooden coffee table and pampas grass, in soft daylight">
-          </button>
-          <button class="shot shot--b" type="button" data-gallery="one" data-index="19" aria-label="Open photos of the 1BHK Apartment: washbasin">
-            <img src="assets/img/o20-720.webp" srcset="assets/img/o20-720.webp 720w, assets/img/o20-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="A round mirror on a leather strap above a washbasin, with pampas grass in a vase">
-          </button>
-          <button class="shot shot--c" type="button" data-gallery="one" data-index="15" aria-label="Open photos of the 1BHK Apartment: bedroom">
-            <img src="assets/img/o16-720.webp" srcset="assets/img/o16-720.webp 720w, assets/img/o16-1440.webp 1440w" sizes="(min-width: 56em) 27vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Bedroom with a honey-wood wardrobe, sheer curtains and a neatly made bed">
-          </button>
-          <button class="shot shot--d" type="button" data-gallery="one" data-index="11" aria-label="Open photos of the 1BHK Apartment: kitchen">
-            <img src="assets/img/o12-720.webp" srcset="assets/img/o12-720.webp 720w, assets/img/o12-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Kitchen counter with an induction cooker, kettle and steel cookware beneath a window">
-          </button>
-          <button class="home__all link" type="button" data-gallery="one" data-index="0">View all 26 photos</button>
-        </div>
-      </article>
+        </article>
 
-      <!-- Home 3: 2BHK Home -->
-      <article class="home container" id="two-bhk" aria-labelledby="two-title">
-        <div class="home__info">
-          <div class="home__sticky">
-            <h3 class="home__name" id="two-title" data-split>The 2BHK Home</h3>
-            <p class="home__lead">Room for four, in soft neutrals and honey-toned wood.</p>
-            <dl class="specs">
-              <div><dt>Guests</dt><dd>Up to 4</dd></div>
-              <div><dt>Beds</dt><dd>1 king, 1 queen</dd></div>
-              <div><dt>Bathrooms</dt><dd>2</dd></div>
-            </dl>
-            <p class="home__desc">A bright, beautifully curated home that feels like a premium getaway, just minutes from IIMB. Two bedrooms, two bathrooms, a full kitchen, a desk for work and a living room to gather in. Good for family visits and longer professional stays.</p>
-            <p class="rating"><svg class="rating__star" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2l1.9 4.3 4.7.4-3.6 3.1 1.1 4.6L8 11.2l-4.1 2.4 1.1-4.6L1.4 5.9l4.7-.4z"/></svg><strong>5.0</strong> from 8 reviews</p>
-            <div class="home__actions">
-              <a class="btn btn--primary" href="#contact" data-enquire="two" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire about the 2BHK</span></a>
-              <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1668814333212238541" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <!-- Home 3: 2BHK Home -->
+        <article class="home" id="two-bhk" aria-labelledby="two-name">
+          <div class="home__inner">
+            <button class="home__media" type="button" data-gallery="two" data-index="15" data-cursor="View" aria-label="View all 21 photos of the 2BHK Home">
+              <span class="home__zoom"><img src="assets/img/d16-720.webp" srcset="assets/img/d16-720.webp 720w, assets/img/d16-1440.webp 1440w" sizes="(min-width: 64em) 58vw, (min-width: 40em) 46vw, 92vw" width="720" height="960" loading="lazy" decoding="async" alt=""></span>
+              <span class="home__count"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-photos"/></svg>21 photos</span>
+            </button>
+            <div class="home__body">
+              <h3 class="home__name" id="two-name">The 2BHK Home</h3>
+              <p class="home__lead">Room for four, in soft neutrals and honey-toned wood.</p>
+              <ul class="home__facts" role="list">
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bed"/></svg>2 bedrooms</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-guests"/></svg>Sleeps 4</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-bath"/></svg>2 bathrooms</li>
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-star"/></svg>5.0 from 8 reviews</li>
+              </ul>
+              <div class="price">
+                <p class="price__item"><span class="price__label">Starting at</span><span class="price__value"><strong>₹3,100</strong> / night</span></p>
+                <p class="price__item price__note">Ask us about monthly stays</p>
+              </div>
+              <div class="home__actions">
+                <a class="btn" href="#contact" data-enquire="The 2BHK Home" data-focus="#enquiry-name" data-magnetic><span class="btn__label">Enquire</span></a>
+                <a class="link link--ext" href="https://www.airbnb.co.in/rooms/1668814333212238541" target="_blank" rel="noopener">View on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+              </div>
             </div>
+            <span class="home__shade" aria-hidden="true"></span>
           </div>
-        </div>
-        <div class="home__gallery" data-cursor="View">
-          <button class="shot shot--a" type="button" data-gallery="two" data-index="2" aria-label="Open photos of the 2BHK Home: living room">
-            <img src="assets/img/d03-720.webp" srcset="assets/img/d03-720.webp 720w, assets/img/d03-1440.webp 1440w" sizes="(min-width: 56em) 36vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Bright living room with cream sofas, framed prints and a round coffee table with sage ottomans">
-          </button>
-          <button class="shot shot--b" type="button" data-gallery="two" data-index="15" aria-label="Open photos of the 2BHK Home: second bedroom">
-            <img src="assets/img/d16-720.webp" srcset="assets/img/d16-720.webp 720w, assets/img/d16-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Second bedroom with a honey-wood king bed and a navy cover">
-          </button>
-          <button class="shot shot--c" type="button" data-gallery="two" data-index="12" aria-label="Open photos of the 2BHK Home: first bedroom">
-            <img src="assets/img/d13-720.webp" srcset="assets/img/d13-720.webp 720w, assets/img/d13-1440.webp 1440w" sizes="(min-width: 56em) 27vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="First bedroom with a queen bed, bedside lamp and built-in wardrobe">
-          </button>
-          <button class="shot shot--d" type="button" data-gallery="two" data-index="6" aria-label="Open photos of the 2BHK Home: kitchen">
-            <img src="assets/img/d07-720.webp" srcset="assets/img/d07-720.webp 720w, assets/img/d07-1440.webp 1440w" sizes="(min-width: 56em) 18vw, 78vw" width="720" height="960" loading="lazy" decoding="async" alt="Kitchen with honey-wood cabinets, a kettle and teal mugs on a dark counter">
-          </button>
-          <button class="home__all link" type="button" data-gallery="two" data-index="0">View all 21 photos</button>
-        </div>
-      </article>
-    </section>
-
-    <!-- ============ Amenities ============ -->
-    <section class="amenities" id="amenities" aria-labelledby="amenities-title">
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee__track">
-          <div class="marquee__group">
-            <span class="marquee__item">Self check-in</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Full kitchen</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Wi-Fi</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Washing machine</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Free parking</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Housekeeping five days a week</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Long stays welcome</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-          </div>
-          <div class="marquee__group">
-            <span class="marquee__item">Self check-in</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Full kitchen</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Wi-Fi</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Washing machine</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Free parking</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Housekeeping five days a week</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-            <span class="marquee__item">Long stays welcome</span><svg class="sprig" viewBox="0 0 48 48"><use href="#sprig"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="container amenities__grid">
-        <div class="amenities__head">
-          <h2 class="section-title" id="amenities-title" data-split>Made for settling in</h2>
-          <p class="amenities__intro">Every home comes with what you need to work, cook and rest, and housekeeping visits five days a week.</p>
-          <figure class="frame amenities__figure" data-reveal>
-            <img data-parallax="6" src="assets/img/d09-720.webp" srcset="assets/img/d09-720.webp 720w, assets/img/d09-1440.webp 1440w" sizes="(min-width: 56em) 38vw, 90vw" width="720" height="480" loading="lazy" decoding="async" alt="A kitchen drawer neatly stocked with cups, mugs and bowls">
-          </figure>
-        </div>
-
-        <div class="amenities__list">
-          <div class="amenity">
-            <h3>Rest</h3>
-            <ul>
-              <li>Fresh bed linen and a wardrobe</li>
-              <li>Hot water, hairdryer, shampoo and shower gel</li>
-              <li>Ceiling fans and a private balcony</li>
-            </ul>
-          </div>
-          <div class="amenity">
-            <h3>Cook</h3>
-            <ul>
-              <li>Fridge, microwave and kettle</li>
-              <li>Pots, pans, oil, salt and pepper</li>
-              <li>Plates, bowls, cups and cutlery</li>
-            </ul>
-          </div>
-          <div class="amenity">
-            <h3>Work</h3>
-            <ul>
-              <li>Wi-Fi in every home</li>
-              <li>A dedicated desk in the Private Suite and the 2BHK</li>
-              <li>A TV for the evenings</li>
-            </ul>
-          </div>
-          <div class="amenity">
-            <h3>Laundry</h3>
-            <ul>
-              <li>Washing machine</li>
-              <li>Iron and hangers</li>
-              <li>A launderette nearby</li>
-            </ul>
-          </div>
-          <div class="amenity">
-            <h3>Arrive</h3>
-            <ul>
-              <li>Self check-in with a lockbox</li>
-              <li>Free parking on the premises</li>
-              <li>CCTV covering the corridor</li>
-            </ul>
-          </div>
-          <div class="amenity">
-            <h3>Stay longer</h3>
-            <ul>
-              <li>Housekeeping five days a week</li>
-              <li>Stays of 28 nights or more welcome</li>
-              <li>Food delivery and cabs at any hour</li>
-            </ul>
-          </div>
-        </div>
+        </article>
       </div>
     </section>
 
-    <!-- ============ Neighbourhood ============ -->
-    <section class="area" id="neighbourhood" aria-labelledby="area-title">
-      <div class="container area__grid">
-        <div class="area__head">
-          <h2 class="section-title" id="area-title" data-split>Off Bannerghatta Road</h2>
-          <p class="area__intro">A quiet, safe residential neighbourhood that is still well connected. Uber and Ola are easy to find at any hour, public transport is close by, and Swiggy and Zomato deliver to the door.</p>
-        </div>
-        <ul class="places">
-          <li class="place"><span class="place__name">IIM Bangalore</span><span class="place__note">Just minutes away</span></li>
-          <li class="place"><span class="place__name">Christ University</span><span class="place__note">Close by</span></li>
-          <li class="place"><span class="place__name">Vega City Mall</span><span class="place__note">Shopping, restaurants and cafés</span></li>
-          <li class="place"><span class="place__name">Apollo Hospital</span><span class="place__note">Easy to reach</span></li>
-          <li class="place"><span class="place__name">Groceries and cafés</span><span class="place__note">A short distance away</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============ Reviews ============ -->
+    <!-- ============ Reviews: one guest at a time ============ -->
     <section class="reviews" id="reviews" aria-labelledby="reviews-title">
-      <div class="container reviews__head">
-        <h2 class="section-title" id="reviews-title" data-split>What guests say</h2>
-        <div class="reviews__score">
-          <p class="reviews__number" aria-hidden="true">5.0</p>
-          <div class="reviews__summary">
-            <p><span class="sr-only">Rated 5.0 out of 5. </span>All 24 guests who have reviewed us on Airbnb gave five stars, and all three homes are Guest favourites.</p>
-            <p class="reviews__mentions">Mentioned most: hospitality (19 reviews), cleanliness (13) and comfort (13).</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="reviews__track" data-cursor="Drag" data-lenis-prevent-horizontal tabindex="0" aria-label="Guest reviews, scroll sideways for more">
-        <figure class="review">
-          <blockquote><p>The place was exactly as described—clean, well-maintained, and very comfortable. The environment was peaceful and safe… It truly felt like a home away from home.</p></blockquote>
-          <figcaption><span class="review__name">Puja</span><span class="review__home">The Private Suite</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>The space was spotless, cozy, and thoughtfully maintained, which made it feel comfortable right from the moment I arrived. Check-in was seamless and the instructions were clear.</p></blockquote>
-          <figcaption><span class="review__name">Md</span><span class="review__home">The 1BHK Apartment</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>What we appreciated most was the regular housekeeping and how quickly he responded to any requests or questions. His hospitality and attentiveness really made our stay comfortable and stress-free.</p></blockquote>
-          <figcaption><span class="review__name">Pranav</span><span class="review__home">The Private Suite</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>It’s a very cozy home away from home kind of a set up. Clean bathrooms, cozy beds, equipped kitchen with all cutlery, microwave and fridge. Worth the money if you’re looking for a comfortable stay.</p></blockquote>
-          <figcaption><span class="review__name">Vignesh</span><span class="review__home">The 2BHK Home</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>The home was extremely comfortable, located in a quiet neighbourhood, and had all the amenities needed even for a longer stay.</p></blockquote>
-          <figcaption><span class="review__name">Abia</span><span class="review__home">The Private Suite</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>The place was clean, well-maintained, and exactly as described. The host was friendly, responsive, and made sure everything was smooth from check-in to check-out.</p></blockquote>
-          <figcaption><span class="review__name">Akashdeep</span><span class="review__home">The 2BHK Home</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>The place was very clean, peaceful, and calm. The staff were friendly, polite, and well behaved. Everything was comfortable and well maintained.</p></blockquote>
-          <figcaption><span class="review__name">Abhijith</span><span class="review__home">The 1BHK Apartment</span></figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote><p>The place is peaceful, and the neighbours are calm too, which made the experience even better. Overall, it felt safe, calm, and homely.</p></blockquote>
-          <figcaption><span class="review__name">Arjun</span><span class="review__home">The Private Suite</span></figcaption>
-        </figure>
-      </div>
-
-      <div class="container reviews__foot">
-        <div class="reviews__controls">
-          <button class="round-btn" type="button" data-reviews-prev aria-label="Previous reviews">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-          </button>
-          <button class="round-btn" type="button" data-reviews-next aria-label="Next reviews">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <span class="reviews__progress" aria-hidden="true"><span></span></span>
-        </div>
-        <a class="link link--ext" href="https://www.airbnb.co.in/users/profile/1665990169283853064" target="_blank" rel="noopener">Read all 24 reviews on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-      </div>
-    </section>
-
-    <!-- ============ Host ============ -->
-    <section class="host" id="host" aria-labelledby="host-title">
-      <div class="container host__grid">
-        <figure class="frame host__photo" data-reveal>
-          <img data-parallax="8" src="assets/img/r14-720.webp" srcset="assets/img/r14-720.webp 720w, assets/img/r14-1440.webp 1440w" sizes="(min-width: 56em) 34vw, 86vw" width="720" height="960" loading="lazy" decoding="async" alt="The entrance: a carved wooden door with potted plants along the tiled porch">
-        </figure>
-        <div class="host__text">
-          <h2 class="section-title" id="host-title" data-split>Hosted by Gaurav</h2>
-          <blockquote class="host__bio">
-            <p>“An avid traveler turned host. Driven by the desire to build great experiences, I focus on keeping my spaces calm, comfortable, and thoughtfully put together. Inspired by my own trips, I aim to offer simple, clean, and welcoming homes where you can easily unwind and feel perfectly at ease.”</p>
-          </blockquote>
-          <dl class="host__facts">
-            <div><dt>Airbnb status</dt><dd>Superhost</dd></div>
-            <div><dt>Response time</dt><dd>Within an hour</dd></div>
-            <div><dt>Languages</dt><dd>English, Hindi and Kannada</dd></div>
-            <div><dt>Co-host</dt><dd>Yashas</dd></div>
-          </dl>
-          <figure class="host__quote">
-            <blockquote><p>“He was always just a call away and never hesitated to help whenever we needed anything.”</p></blockquote>
-            <figcaption>Pranav, who stayed in the Private Suite</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ Good to know ============ -->
-    <section class="know" id="good-to-know" aria-labelledby="know-title">
       <div class="container">
-        <h2 class="section-title" id="know-title" data-split>Good to know</h2>
-        <div class="know__grid">
-          <div class="know__col">
-            <h3>Arriving</h3>
-            <ul>
-              <li>Check in from 2:00 pm, letting yourself in with a lockbox.</li>
-              <li>Check out by 11:00 am. Ask ahead if you need longer.</li>
-              <li>The 1BHK is on the second floor, reached by stairs.</li>
-            </ul>
+        <div class="reviews__head">
+          <h2 class="section-title" id="reviews-title" data-split>What guests say</h2>
+          <div class="reviews__meta">
+            <p>All 24 guests who have reviewed us on Airbnb gave five stars.</p>
+            <a class="link link--ext" href="https://www.airbnb.co.in/users/show/757101255" target="_blank" rel="noopener">Read the reviews on Airbnb<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
           </div>
-          <div class="know__col">
-            <h3>Before you arrive</h3>
-            <ul>
-              <li>As local guidelines require, every guest shares a government photo ID (passport, driving licence, Aadhaar or voter ID) and a selfie.</li>
-              <li>Guests from outside India also share visa and FRRO details.</li>
-              <li>We send a short form to collect these before your stay.</li>
-            </ul>
+        </div>
+
+        <!-- Without JavaScript every review is listed; main.js turns them into a slow, pausable sequence -->
+        <div class="quotes" data-quotes role="region" aria-roledescription="carousel" aria-label="Guest reviews">
+          <div class="quotes__stage" data-quotes-stage>
+            <figure class="quote is-active" data-quote>
+              <blockquote class="quote__text"><p>The place was exactly as described: clean, well-maintained, and very comfortable. The environment was peaceful and safe… It truly felt like a home away from home.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Puja</span><span class="quote__home">Stayed in the Private Suite</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>The space was spotless, cozy, and thoughtfully maintained, which made it feel comfortable right from the moment I arrived. Check-in was seamless and the instructions were clear.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Md</span><span class="quote__home">Stayed in the 1BHK Apartment</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>It’s a very cozy home away from home kind of a set up. Clean bathrooms, cozy beds, equipped kitchen with all cutlery, microwave and fridge.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Vignesh</span><span class="quote__home">Stayed in the 2BHK Home</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>What we appreciated most was the regular housekeeping and how quickly he responded to any requests or questions. His hospitality and attentiveness really made our stay comfortable and stress-free.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Pranav</span><span class="quote__home">Stayed in the Private Suite</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>The place was very clean, peaceful, and calm. The staff were friendly, polite, and well behaved. Everything was comfortable and well maintained.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Abhijith</span><span class="quote__home">Stayed in the 1BHK Apartment</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>The place was clean, well-maintained, and exactly as described. The host was friendly, responsive, and made sure everything was smooth from check-in to check-out.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Akashdeep</span><span class="quote__home">Stayed in the 2BHK Home</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>The place is peaceful, and the neighbours are calm too, which made the experience even better. Overall, it felt safe, calm, and homely.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Arjun</span><span class="quote__home">Stayed in the Private Suite</span></figcaption>
+            </figure>
+            <figure class="quote" data-quote>
+              <blockquote class="quote__text"><p>The home was extremely comfortable, located in a quiet neighbourhood, and had all the amenities needed even for a longer stay.</p></blockquote>
+              <figcaption class="quote__by"><span class="quote__name">Abia</span><span class="quote__home">Stayed in the Private Suite</span></figcaption>
+            </figure>
           </div>
-          <div class="know__col">
-            <h3>House rules</h3>
-            <ul>
-              <li>Quiet hours run from 11:00 pm to 7:00 am.</li>
-              <li>No smoking, parties or events.</li>
-              <li>Only registered guests can stay or visit.</li>
-            </ul>
+
+          <div class="quotes__controls" data-quotes-controls hidden>
+            <button class="round-btn round-btn--light" type="button" data-quote-prev aria-label="Previous review">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button class="round-btn round-btn--light" type="button" data-quote-next aria-label="Next review">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+            <p class="quotes__count" data-quote-count>1 / 8</p>
+            <span class="quotes__bar" data-quote-bar aria-hidden="true"><span></span></span>
+            <button class="quotes__toggle" type="button" data-quote-toggle>
+              <svg class="quotes__toggle-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9"/></svg>
+              <svg class="quotes__toggle-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.5 8z"/></svg>
+              <span data-quote-toggle-label>Pause reviews</span>
+            </button>
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ============ Location: the entrance opens out as you arrive ============ -->
+    <section class="area" id="location" aria-labelledby="area-title">
+      <div class="container area__head">
+        <h2 class="section-title" id="area-title" data-split>Off Bannerghatta Road</h2>
+        <div class="area__text">
+          <p class="area__intro">A quiet, safe neighbourhood in south Bengaluru, a few minutes from IIM Bangalore, Christ University, Vega City Mall and Apollo Hospital. Cabs and food delivery reach the door at any hour.</p>
+          <p class="area__note">We share the exact address once your stay is booked.</p>
+          <a class="link link--ext" href="https://www.google.com/maps/search/?api=1&amp;query=IIM%20Bangalore%2C%20Bannerghatta%20Road%2C%20Bengaluru" target="_blank" rel="noopener">See the area on Google Maps<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+      </div>
+
+      <figure class="area__photo" data-expand>
+        <img src="assets/img/r14-1440.webp" srcset="assets/img/r14-720.webp 720w, assets/img/r14-1440.webp 1440w, assets/img/r14-1920.webp 1920w" sizes="100vw" width="1440" height="1920" loading="lazy" decoding="async" alt="The entrance: a carved wooden door, with potted plants along the tiled porch">
+      </figure>
     </section>
 
     <!-- ============ Contact + enquiry form ============ -->
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="container contact__grid">
-        <h2 class="contact__title" id="contact-title" data-split>Plan your stay</h2>
         <div class="contact__intro">
-          <p class="contact__text">Tell us your dates and who’s coming, and we’ll reply with availability and rates. We usually reply within an hour.</p>
-
-          <ul class="contact__details">
-            <li data-contact-row="phone"><span class="contact__label">Call or WhatsApp</span><a data-contact="phone" href="#contact">+91 00000 00000</a></li>
-            <li data-contact-row="email"><span class="contact__label">Email</span><a data-contact="email" href="#contact">hello@example.com</a></li>
-            <li><span class="contact__label">Area</span><span>Off Bannerghatta Road, near IIM Bangalore, Bengaluru</span></li>
+          <h2 class="section-title" id="contact-title" data-split>Plan your stay</h2>
+          <p class="contact__text">Tell us your dates and who’s coming. We’ll reply with availability and rates, usually within the hour.</p>
+          <ul class="contact__details" role="list" data-contact-group>
+            <li data-contact-row="phone"><span class="contact__label">Call or WhatsApp</span><a data-contact="phone" href="#contact">Phone</a></li>
+            <li data-contact-row="email"><span class="contact__label">Email</span><a data-contact="email" href="#contact">Email</a></li>
           </ul>
-
-          <div class="contact__airbnb">
-            <p>Prefer to book on Airbnb?</p>
-            <ul>
-              <li><a class="link link--ext" href="https://www.airbnb.co.in/rooms/1665990167777255737" target="_blank" rel="noopener">The Private Suite<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> on Airbnb (opens in a new tab)</span></a></li>
-              <li><a class="link link--ext" href="https://www.airbnb.co.in/rooms/1775228272716220847" target="_blank" rel="noopener">The 1BHK Apartment<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> on Airbnb (opens in a new tab)</span></a></li>
-              <li><a class="link link--ext" href="https://www.airbnb.co.in/rooms/1668814333212238541" target="_blank" rel="noopener">The 2BHK Home<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="sr-only"> on Airbnb (opens in a new tab)</span></a></li>
-            </ul>
-          </div>
         </div>
 
-        <div class="form-card">
-          <form class="enquiry" id="enquiry-form" novalidate>
-            <div class="enquiry__grid">
+        <div class="contact__form">
+          <!-- Handled by Netlify Forms: detection must be enabled for the site (Forms > Enable form detection) -->
+          <form class="enquiry" id="enquiry-form" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <!-- Filled in by enquiry.js before sending; the subject becomes the notification email's subject -->
+            <input type="hidden" name="subject" value="New stay enquiry from the Avyra Stays website">
+            <div class="enquiry__row">
               <div class="field">
                 <label for="enquiry-name">Your name</label>
                 <input id="enquiry-name" name="name" type="text" autocomplete="name" required aria-describedby="err-name">
@@ -527,62 +327,38 @@
                 <input id="enquiry-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="err-phone">
                 <p class="field__error" id="err-phone"></p>
               </div>
-              <div class="field">
-                <label for="enquiry-email">Email</label>
-                <input id="enquiry-email" name="email" type="email" autocomplete="email" required aria-describedby="err-email">
-                <p class="field__error" id="err-email"></p>
-              </div>
-              <div class="field">
-                <label for="enquiry-home">Home</label>
-                <select id="enquiry-home" name="home" required aria-describedby="err-home">
-                  <option value="">Choose a home</option>
-                  <option value="suite">The Private Suite (up to 2)</option>
-                  <option value="one">The 1BHK Apartment (up to 2)</option>
-                  <option value="two">The 2BHK Home (up to 4)</option>
-                  <option value="any">Not sure yet</option>
-                </select>
-                <p class="field__error" id="err-home"></p>
-              </div>
-              <div class="field">
-                <label for="enquiry-checkin">Check-in</label>
-                <input id="enquiry-checkin" name="checkin" type="date" required aria-describedby="err-checkin">
-                <p class="field__error" id="err-checkin"></p>
-              </div>
-              <div class="field">
-                <label for="enquiry-checkout">Check-out</label>
-                <input id="enquiry-checkout" name="checkout" type="date" required aria-describedby="err-checkout">
-                <p class="field__error" id="err-checkout"></p>
-              </div>
-              <div class="field">
-                <label for="enquiry-guests">Guests</label>
-                <select id="enquiry-guests" name="guests" required aria-describedby="err-guests">
-                  <option value="1">1 guest</option>
-                  <option value="2" selected>2 guests</option>
-                  <option value="3">3 guests</option>
-                  <option value="4">4 guests</option>
-                </select>
-                <p class="field__error" id="err-guests"></p>
-              </div>
-              <div class="field field--wide">
-                <label for="enquiry-message">Anything we should know? <span class="field__optional">Optional</span></label>
-                <textarea id="enquiry-message" name="message" rows="3" maxlength="1000"></textarea>
-              </div>
-              <!-- Spam trap: people never see or fill this -->
-              <input class="enquiry__trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
             </div>
-            <div class="enquiry__submit">
-              <button class="btn btn--primary btn--lg" type="submit" data-magnetic><span class="btn__label">Send enquiry</span></button>
-              <p class="enquiry__status" role="status" aria-live="polite" data-form-status></p>
+            <div class="field">
+              <label for="enquiry-email">Email</label>
+              <input id="enquiry-email" name="email" type="email" autocomplete="email" required aria-describedby="err-email">
+              <p class="field__error" id="err-email"></p>
             </div>
+            <div class="field">
+              <label for="enquiry-message">Message <span class="field__optional">Optional</span></label>
+              <textarea id="enquiry-message" name="message" rows="3" maxlength="1000" placeholder="Your dates, how many guests, and the home you have in mind" aria-describedby="hint-message"></textarea>
+              <p class="sr-only" id="hint-message">Your dates, how many guests, and the home you have in mind.</p>
+            </div>
+            <!-- Spam trap (Netlify honeypot): people never see or fill this -->
+            <p class="enquiry__trap" aria-hidden="true">
+              <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+            </p>
+            <button class="btn btn--block" type="submit"><span class="btn__label">Send enquiry</span></button>
+            <p class="enquiry__status" role="status" aria-live="polite" data-form-status></p>
           </form>
+
+          <!-- Shown only when a WhatsApp number is set in config.js -->
+          <div class="enquiry__alt" data-whatsapp-row hidden>
+            <p class="enquiry__or"><span>or</span></p>
+            <a class="btn btn--outline btn--block" data-whatsapp href="#contact" target="_blank" rel="noopener">
+              <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="btn__label">Chat on WhatsApp</span><span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
 
           <div class="enquiry-done" id="enquiry-done" hidden>
             <h3 class="enquiry-done__title" tabindex="-1" data-done-title>Enquiry sent</h3>
             <p class="enquiry-done__text" data-done-text></p>
-            <dl class="enquiry-done__summary" data-done-summary></dl>
             <div class="enquiry-done__actions">
-              <a class="btn btn--primary" data-done-whatsapp href="#contact" target="_blank" rel="noopener"><span class="btn__label">Continue on WhatsApp</span></a>
-              <a class="btn btn--outline" data-done-email href="#contact" hidden><span class="btn__label">Send by email</span></a>
+              <a class="btn" data-done-whatsapp href="#contact" target="_blank" rel="noopener" hidden><span class="btn__label">Continue on WhatsApp</span></a>
             </div>
             <button class="link enquiry-done__reset" type="button" data-done-reset>Send another enquiry</button>
           </div>
@@ -592,27 +368,23 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer__top">
+    <div class="container footer__grid">
       <div class="footer__brand">
         <a class="footer__logo" href="#top" aria-label="Avyra Stays, back to top">
           <img src="assets/logo/avyra-logo-cream.webp" width="800" height="265" alt="" loading="lazy">
         </a>
-        <p>Three homes off Bannerghatta Road, near IIM Bangalore and Christ University, Bengaluru.</p>
+        <p>Three calm homes off Bannerghatta Road, Bengaluru.</p>
       </div>
       <nav class="footer__nav" aria-label="Footer">
         <a href="#homes">Homes</a>
         <a href="#reviews">Reviews</a>
-        <a href="#neighbourhood">Neighbourhood</a>
-        <a href="#good-to-know">Good to know</a>
-        <a href="#contact">Contact</a>
+        <a href="#location">Location</a>
+        <a href="#contact" data-focus="#enquiry-name">Enquire</a>
       </nav>
-      <div class="footer__contact">
-        <a data-contact="phone" href="#contact">+91 00000 00000</a>
-        <a data-contact="email" href="#contact">hello@example.com</a>
+      <div class="footer__contact" data-contact-group>
+        <a data-contact="email" href="#contact">Email</a>
+        <a data-contact="phone" href="#contact">Phone</a>
       </div>
-    </div>
-    <div class="footer__mast" aria-hidden="true">
-      <span class="footer__letter">A</span><span class="footer__letter">V</span><span class="footer__letter">Y</span><span class="footer__letter">R</span><span class="footer__letter">A</span>
     </div>
     <div class="container footer__bottom">
       <p>© <span data-year>2026</span> Avyra Stays</p>
@@ -645,17 +417,30 @@
 
   <div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
 
-  <!-- Olive sprig used in the amenities ticker -->
+  <!-- Icons -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="sprig" viewBox="0 0 48 48">
-      <path d="M9 41C18 32 28 20 39 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <g fill="currentColor">
-        <path d="M0 0C4-3.2 10-3.2 14 0C10 3.2 4 3.2 0 0Z" transform="translate(16.5 32.5) rotate(-112)"/>
-        <path d="M0 0C4-3.2 10-3.2 14 0C10 3.2 4 3.2 0 0Z" transform="translate(18.5 30.5) rotate(-12)"/>
-        <path d="M0 0C4-3.2 10-3.2 14 0C10 3.2 4 3.2 0 0Z" transform="translate(26 22) rotate(-118)"/>
-        <path d="M0 0C4-3.2 10-3.2 14 0C10 3.2 4 3.2 0 0Z" transform="translate(28 19.5) rotate(-18)"/>
-        <path d="M0 0C4-3.2 10-3.2 14 0C10 3.2 4 3.2 0 0Z" transform="translate(35 12) rotate(-50)"/>
-      </g>
+    <symbol id="i-bed" viewBox="0 0 16 16">
+      <path d="M1.5 13V3.5M1.5 10h13v3M14.5 10V8.2A1.7 1.7 0 0 0 12.8 6.5H7v3.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="4.2" cy="7.6" r="1.3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-guests" viewBox="0 0 16 16">
+      <circle cx="6" cy="5" r="2.3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M1.8 13.5c.4-2.4 2.1-3.9 4.2-3.9s3.8 1.5 4.2 3.9M10.6 3a2.3 2.3 0 0 1 0 4.2M12 9.9c1.2.5 2 1.7 2.2 3.6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-bath" viewBox="0 0 16 16">
+      <path d="M1.5 8.5h13M2.5 8.5V10a3 3 0 0 0 3 3h5a3 3 0 0 0 3-3V8.5M4.6 13l-.7 1.5M11.4 13l.7 1.5M3.5 8.5V3.9a1.9 1.9 0 0 1 3.6-.9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 16 16">
+      <path d="M8 1.6l1.8 4 4.4.4-3.3 2.9 1 4.3L8 10.9l-3.9 2.3 1-4.3L1.8 6l4.4-.4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-photos" viewBox="0 0 16 16">
+      <rect x="1.8" y="1.8" width="5.2" height="5.2" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="9" y="1.8" width="5.2" height="5.2" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="1.8" y="9" width="5.2" height="5.2" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="9" y="9" width="5.2" height="5.2" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24">
+      <path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2zm0 17.9a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8.1 8.1 0 1 1 12 20.1zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z" fill="currentColor"/>
     </symbol>
   </svg>
 
@@ -663,8 +448,8 @@
   <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="assets/vendor/SplitText.min.js" defer></script>
   <script src="assets/vendor/lenis.min.js" defer></script>
-  <script src="assets/js/config.js" defer></script>
-  <script src="assets/js/enquiry.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/config.js?v=20261020" defer></script>
+  <script src="assets/js/enquiry.js?v=20261020" defer></script>
+  <script src="assets/js/main.js?v=20261020d" defer></script>
 </body>
 </html>

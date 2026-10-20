@@ -1,10 +1,10 @@
 /*
  * Avyra Stays: enquiry form.
  *
- * Checks each field in plain language, emails the enquiry through Web3Forms
- * when a key is set in config.js, and always offers WhatsApp as the next step.
- * Without a key, the enquiry is handed to WhatsApp or the guest's email app,
- * already written out.
+ * Checks each field in plain language, then submits the enquiry to Netlify
+ * Forms. Netlify stores every submission and emails it to the address set
+ * under Forms > Submission notifications in the Netlify dashboard. When a
+ * WhatsApp number is set in config.js, guests can also continue there.
  */
 (() => {
   'use strict';
@@ -13,44 +13,17 @@
   const done = document.getElementById('enquiry-done');
   if (!form || !done) return;
 
+  // This script does the checking; without JavaScript the browser's own checks apply.
+  form.noValidate = true;
+
   const config = window.AVYRA_CONFIG || {};
+  const whatsappNumber = (config.whatsapp || '').replace(/\D/g, '');
+  const contactEmail = (config.email || '').trim();
   const status = form.querySelector('[data-form-status]');
   const submit = form.querySelector('button[type="submit"]');
   const submitLabel = submit.querySelector('.btn__label');
+  const altRow = document.querySelector('[data-whatsapp-row]');
   const field = (name) => form.elements.namedItem(name);
-
-  const HOMES = {
-    suite: { name: 'The Private Suite', sleeps: 2 },
-    one: { name: 'The 1BHK Apartment', sleeps: 2 },
-    two: { name: 'The 2BHK Home', sleeps: 4 },
-    any: { name: 'Not sure yet', sleeps: 4 },
-  };
-
-  /* ---------- Dates, as local calendar days (YYYY-MM-DD) ---------- */
-
-  const pad = (n) => String(n).padStart(2, '0');
-  const toISO = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-  const fromISO = (value) => {
-    const [y, m, d] = value.split('-').map(Number);
-    return new Date(y, m - 1, d);
-  };
-  const addDays = (date, days) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-  const pretty = (value) => fromISO(value).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-
-  const today = toISO(new Date());
-  const resetDateLimits = () => {
-    field('checkin').min = today;
-    field('checkout').min = toISO(addDays(new Date(), 1));
-  };
-  resetDateLimits();
-
-  field('checkin').addEventListener('change', () => {
-    const checkin = field('checkin').value;
-    if (!checkin) return;
-    const earliest = toISO(addDays(fromISO(checkin), 1));
-    field('checkout').min = earliest;
-    if (field('checkout').value && field('checkout').value < earliest) field('checkout').value = '';
-  });
 
   /* ---------- Validation ---------- */
 
@@ -61,20 +34,6 @@
       return (digits >= 10 && digits <= 15) || 'Enter a phone number with at least 10 digits.';
     },
     email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Enter an email address, like name@example.com.',
-    home: (v) => Boolean(v) || 'Choose a home, or pick “Not sure yet”.',
-    checkin: (v) => {
-      if (!v) return 'Choose a check-in date.';
-      return v >= today || 'Choose a check-in date from today onwards.';
-    },
-    checkout: (v) => {
-      if (!v) return 'Choose a check-out date.';
-      const checkin = field('checkin').value;
-      return !checkin || v > checkin || 'Check-out needs to be after check-in.';
-    },
-    guests: (v) => {
-      const home = HOMES[field('home').value];
-      return !home || Number(v) <= home.sleeps || `${home.name} sleeps up to ${home.sleeps}. For 3 or 4 guests, choose the 2BHK Home.`;
-    },
   };
 
   const touched = new Set();
@@ -109,46 +68,24 @@
       touched.add(name);
       check(name);
     });
-    const recheck = () => touched.has(name) && check(name);
-    input.addEventListener('input', recheck);
-    input.addEventListener('change', recheck);
+    input.addEventListener('input', () => touched.has(name) && check(name));
   });
-
-  // A home that sleeps fewer people can make the guest count invalid, and the reverse.
-  field('home').addEventListener('change', () => {
-    touched.add('guests');
-    check('guests');
-  });
-  field('checkin').addEventListener('change', () => touched.has('checkout') && check('checkout'));
 
   /* ---------- The enquiry, as data and as a message ---------- */
 
   function collect() {
-    const checkin = field('checkin').value;
-    const checkout = field('checkout').value;
     return {
       name: field('name').value.trim(),
       phone: field('phone').value.trim(),
       email: field('email').value.trim(),
-      home: HOMES[field('home').value].name,
-      checkin,
-      checkout,
-      nights: Math.round((fromISO(checkout) - fromISO(checkin)) / 86400000),
-      guests: Number(field('guests').value),
       message: field('message').value.trim(),
     };
   }
 
-  const stayLine = (e) => `${pretty(e.checkin)} to ${pretty(e.checkout)} (${e.nights} night${e.nights === 1 ? '' : 's'})`;
-  const guestLine = (e) => `${e.guests} guest${e.guests === 1 ? '' : 's'}`;
-
   function messageFor(e) {
     return [
-      'Hi Avyra Stays, I’d like to check availability.',
+      'Hi Avyra Stays, I’d like to ask about a stay.',
       '',
-      `Home: ${e.home}`,
-      `Dates: ${stayLine(e)}`,
-      `Guests: ${guestLine(e)}`,
       `Name: ${e.name}`,
       `Phone: ${e.phone}`,
       `Email: ${e.email}`,
@@ -158,37 +95,25 @@
       .trim();
   }
 
-  const whatsappLink = (e) =>
-    `https://wa.me/${(config.whatsapp || '').replace(/\D/g, '')}?text=${encodeURIComponent(messageFor(e))}`;
+  const whatsappLink = (e) => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(messageFor(e))}`;
 
   const emailLink = (e) =>
-    `mailto:${config.email || ''}?subject=${encodeURIComponent(`Stay enquiry: ${e.home}, ${stayLine(e)}`)}&body=${encodeURIComponent(messageFor(e))}`;
+    `mailto:${contactEmail}?subject=${encodeURIComponent(`Stay enquiry from ${e.name}`)}&body=${encodeURIComponent(messageFor(e))}`;
 
-  async function sendByEmail(e) {
-    const response = await fetch('https://api.web3forms.com/submit', {
+  // Netlify Forms: a URL-encoded POST to the site, carrying the form's name.
+  async function sendToNetlify(e) {
+    field('subject').value = `New stay enquiry from ${e.name}`;
+    const data = new FormData(form);
+    if (!data.has('form-name')) data.set('form-name', form.getAttribute('name'));
+    const response = await fetch('/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        access_key: config.web3formsKey,
-        subject: `New stay enquiry: ${e.home}, ${stayLine(e)}`,
-        from_name: 'Avyra Stays website',
-        replyto: e.email,
-        name: e.name,
-        email: e.email,
-        phone: e.phone,
-        home: e.home,
-        dates: stayLine(e),
-        guests: guestLine(e),
-        message: e.message || '(none)',
-      }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString(),
     });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.success) throw new Error(result.message || `the form service answered ${response.status}`);
+    if (!response.ok) throw new Error(`the form service answered ${response.status}`);
   }
 
   /* ---------- States ---------- */
-
-  let lastMode = null;
 
   function setBusy(busy) {
     submit.disabled = busy;
@@ -206,7 +131,7 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.textContent = link.text;
-      status.append(' ', a);
+      status.append(' ', a, '.');
     }
   }
 
@@ -222,51 +147,28 @@
     }
   }
 
-  function showDone(mode, e) {
-    lastMode = mode;
-    const sent = mode === 'sent';
+  function showDone(e) {
     const titleEl = done.querySelector('[data-done-title]');
-    titleEl.textContent = sent ? 'Enquiry sent' : 'Your enquiry is ready';
-    done.querySelector('[data-done-text]').textContent = sent
-      ? `Thanks, ${e.name.split(' ')[0]}. It’s in our inbox and we usually reply within an hour. For a quicker answer, continue on WhatsApp.`
-      : 'Send it to us on WhatsApp or by email. Both open with your details already filled in.';
-
-    const rows = [
-      ['Home', e.home],
-      ['Dates', stayLine(e)],
-      ['Guests', guestLine(e)],
-    ];
-    done.querySelector('[data-done-summary]').replaceChildren(
-      ...rows.flatMap(([term, value]) => {
-        const dt = document.createElement('dt');
-        const dd = document.createElement('dd');
-        dt.textContent = term;
-        dd.textContent = value;
-        return [dt, dd];
-      })
-    );
+    const first = e.name.split(' ')[0];
+    done.querySelector('[data-done-text]').textContent = whatsappNumber
+      ? `Thanks, ${first}. We’ve received your enquiry and usually reply within the hour. For a quicker answer, continue on WhatsApp.`
+      : `Thanks, ${first}. We’ve received your enquiry and usually reply within the hour.`;
 
     const whatsapp = done.querySelector('[data-done-whatsapp]');
-    whatsapp.href = whatsappLink(e);
-    whatsapp.querySelector('.btn__label').textContent = sent ? 'Continue on WhatsApp' : 'Send on WhatsApp';
+    whatsapp.hidden = !whatsappNumber;
+    if (whatsappNumber) whatsapp.href = whatsappLink(e);
 
-    const email = done.querySelector('[data-done-email]');
-    email.href = emailLink(e);
-    email.hidden = sent;
-
-    done.querySelector('[data-done-reset]').textContent = sent ? 'Send another enquiry' : 'Edit enquiry';
-
+    if (altRow) altRow.hidden = true;
     swap(form, done);
     titleEl.focus({ preventScroll: true });
   }
 
   done.querySelector('[data-done-reset]').addEventListener('click', () => {
-    if (lastMode === 'sent') {
-      form.reset();
-      clearErrors();
-      resetDateLimits();
-    }
+    form.reset();
+    delete field('message').dataset.prefill;
+    clearErrors();
     showStatus('');
+    if (altRow) altRow.hidden = !whatsappNumber;
     swap(done, form);
     field('name').focus({ preventScroll: true });
   });
@@ -275,7 +177,7 @@
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (field('botcheck').checked) return;
+    if (field('bot-field').value) return;
 
     Object.keys(RULES).forEach((name) => touched.add(name));
     const invalid = Object.keys(RULES).filter((name) => !check(name));
@@ -287,22 +189,18 @@
 
     showStatus('');
     const enquiry = collect();
-
-    if (!config.web3formsKey) {
-      showDone('manual', enquiry);
-      return;
-    }
-
     setBusy(true);
     try {
-      await sendByEmail(enquiry);
-      showDone('sent', enquiry);
+      await sendToNetlify(enquiry);
+      showDone(enquiry);
     } catch (error) {
       const reason = error instanceof TypeError ? 'the connection failed' : error.message;
-      showStatus(`Couldn’t send your enquiry: ${reason}. Try again, or`, true, {
-        href: whatsappLink(enquiry),
-        text: 'send it on WhatsApp',
-      });
+      const fallback = whatsappNumber
+        ? { href: whatsappLink(enquiry), text: 'send it on WhatsApp' }
+        : contactEmail
+          ? { href: emailLink(enquiry), text: `email it to ${contactEmail}` }
+          : null;
+      showStatus(`Couldn’t send your enquiry: ${reason}. Try again${fallback ? ', or' : ' in a moment.'}`, true, fallback);
     } finally {
       setBusy(false);
     }

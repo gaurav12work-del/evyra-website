@@ -1,0 +1,4 @@
+# Netlify: a static site with no build step, served from the repository root.
+# The enquiry form uses Netlify Forms (form detection is enabled on the site).
+[build]
+  publish = "."

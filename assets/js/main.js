@@ -16,6 +16,8 @@
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const motion = Boolean(gsap && ScrollTrigger && SplitText) && !reduceMotion;
   const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
+  // The stacked-homes layout in styles.css uses this same query.
+  const STACKED = '(min-width: 64em) and (min-height: 40em)';
 
   let lenis = null;
 
@@ -80,6 +82,21 @@
       el.href = kind === 'phone' ? `tel:${phone.replace(/[^\d+]/g, '')}` : `mailto:${email}`;
     });
 
+    // A group with nothing left to show (no phone, no email) disappears too.
+    document.querySelectorAll('[data-contact-group]').forEach((group) => {
+      group.hidden = ![...group.querySelectorAll('[data-contact]')].some((el) => !el.closest('[hidden]'));
+    });
+
+    document.querySelectorAll('[data-whatsapp-row]').forEach((row) => {
+      row.hidden = !whatsapp;
+    });
+    if (whatsapp) {
+      const greeting = encodeURIComponent('Hi Avyra Stays, I’d like to ask about a stay.');
+      document.querySelectorAll('[data-whatsapp]').forEach((link) => {
+        link.href = `https://wa.me/${whatsapp}?text=${greeting}`;
+      });
+    }
+
     if (/0{5}/.test(phone) || /example\.com$/i.test(email) || /^(91)?0+$/.test(whatsapp)) {
       console.info('Avyra Stays: contact details are placeholders. Edit assets/js/config.js before launch.');
     }
@@ -127,8 +144,6 @@
       if (!target) return;
 
       event.preventDefault();
-      closeMenu(false);
-
       const focusSelector = link.dataset.focus;
       scrollToTarget(target, () => {
         const focusEl = focusSelector ? document.querySelector(focusSelector) : target === 'top' ? null : target;
@@ -139,18 +154,27 @@
     });
   }
 
-  /* ---------- Navigation: floating pill, hides on the way down ---------- */
+  /* ---------- Navigation: light over the cover, cream after it; hides on the way down ---------- */
 
   function initNav() {
     const nav = document.querySelector('[data-nav]');
     if (!nav) return;
+    const hero = document.querySelector('.hero');
+
+    // The bar turns cream as the welcome note reaches it, i.e. once the photo is gone from behind it.
+    let solidFrom = 24;
+    const measure = () => {
+      if (hero) solidFrom = hero.offsetHeight - nav.offsetHeight;
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
 
     let lastY = window.scrollY;
     const update = (y) => {
-      nav.classList.toggle('is-scrolled', y > 24);
+      nav.classList.toggle('is-solid', y > solidFrom);
       const delta = y - lastY;
       if (Math.abs(delta) < 6) return;
-      nav.classList.toggle('is-hidden', delta > 0 && y > window.innerHeight * 0.7 && !menuOpen);
+      nav.classList.toggle('is-hidden', delta > 0 && y > window.innerHeight * 0.7);
       lastY = y;
     };
 
@@ -158,84 +182,8 @@
     else window.addEventListener('scroll', () => update(window.scrollY), { passive: true });
     update(window.scrollY);
 
-    // Mark the link for the section currently in view.
-    const links = [...nav.querySelectorAll('.nav__links a')];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          links.forEach((link) => {
-            if (link.getAttribute('href') === `#${entry.target.id}`) link.setAttribute('aria-current', 'true');
-            else link.removeAttribute('aria-current');
-          });
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
-    links.forEach((link) => {
-      const section = document.querySelector(link.getAttribute('href'));
-      if (section) observer.observe(section);
-    });
-  }
-
-  /* ---------- Mobile menu ---------- */
-
-  const menu = document.getElementById('menu');
-  const menuToggle = document.querySelector('.nav__toggle');
-  const pageRegions = [document.querySelector('main'), document.querySelector('.footer')];
-  let menuOpen = false;
-
-  function openMenu() {
-    if (menuOpen || !menu) return;
-    menuOpen = true;
-    menu.hidden = false;
-    html.classList.add('menu-open');
-    menuToggle.setAttribute('aria-expanded', 'true');
-    menuToggle.setAttribute('aria-label', 'Close menu');
-    pageRegions.forEach((region) => region && (region.inert = true));
-    lenis?.stop();
-
-    if (motion) {
-      gsap.killTweensOf(menu);
-      gsap
-        .timeline()
-        .fromTo(menu, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5, ease: 'expo.out' })
-        .fromTo(menu.querySelectorAll('.menu__link span'), { yPercent: 105 }, { yPercent: 0, duration: 0.6, ease: 'expo.out', stagger: 0.05 }, 0.08)
-        .fromTo(menu.querySelector('.menu__foot'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0.3);
-    }
-    menu.querySelector('a')?.focus({ preventScroll: true });
-  }
-
-  function closeMenu(returnFocus = true) {
-    if (!menuOpen) return;
-    menuOpen = false;
-    html.classList.remove('menu-open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.setAttribute('aria-label', 'Open menu');
-    pageRegions.forEach((region) => region && (region.inert = false));
-    lenis?.start();
-
-    const hide = () => {
-      if (!menuOpen) menu.hidden = true;
-    };
-    if (motion) {
-      gsap.killTweensOf(menu);
-      gsap.to(menu, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.4, ease: 'expo.inOut', onComplete: hide });
-    } else {
-      hide();
-    }
-    if (returnFocus) menuToggle.focus({ preventScroll: true });
-  }
-
-  function initMenu() {
-    if (!menu || !menuToggle) return;
-    menuToggle.addEventListener('click', () => (menuOpen ? closeMenu() : openMenu()));
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && menuOpen) closeMenu();
-    });
-    window.matchMedia('(min-width: 56em)').addEventListener('change', (event) => {
-      if (event.matches) closeMenu(false);
-    });
+    // Keyboard users tabbing back to the top should always find the nav.
+    nav.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
   }
 
   /* ---------- Photo viewer ---------- */
@@ -375,109 +323,170 @@
     });
   }
 
-  /* ---------- Reviews: drag, buttons and progress ---------- */
+  /* ---------- Reviews: one at a time, moving on by themselves unless paused ---------- */
 
-  function initReviews() {
-    const track = document.querySelector('.reviews__track');
-    if (!track) return;
-    const prev = document.querySelector('[data-reviews-prev]');
-    const next = document.querySelector('[data-reviews-next]');
-    const bar = document.querySelector('.reviews__progress > span');
-    const behavior = reduceMotion ? 'auto' : 'smooth';
+  function initQuotes() {
+    const root = document.querySelector('[data-quotes]');
+    if (!root) return;
+    const slides = [...root.querySelectorAll('[data-quote]')];
+    const n = slides.length;
+    if (n < 2) return;
 
-    const step = () => {
-      const card = track.querySelector('.review');
-      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      return card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
-    };
+    const stage = root.querySelector('[data-quotes-stage]');
+    const controls = root.querySelector('[data-quotes-controls]');
+    const count = root.querySelector('[data-quote-count]');
+    const bar = root.querySelector('[data-quote-bar]');
+    const timer = bar.firstElementChild;
+    const toggle = root.querySelector('[data-quote-toggle]');
+    const toggleLabel = toggle.querySelector('[data-quote-toggle-label]');
 
-    const update = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const progress = max > 0 ? track.scrollLeft / max : 1;
-      if (bar) bar.style.transform = `scaleX(${0.12 + progress * 0.88})`;
-      prev.disabled = track.scrollLeft < 4;
-      next.disabled = track.scrollLeft > max - 4;
-    };
+    // Reviews only advance by themselves for visitors who are happy with motion.
+    const autoplay = !reduceMotion;
+    let index = 0;
+    let stopped = !autoplay;
+    const holds = new Set();
 
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior }));
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior }));
-    track.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    root.classList.add('is-ready');
+    controls.hidden = false;
+    bar.hidden = !autoplay;
+    toggle.hidden = !autoplay;
 
-    track.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        track.scrollBy({ left: step(), behavior });
-      } else if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        track.scrollBy({ left: -step(), behavior });
-      }
+    slides.forEach((slide, i) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `${i + 1} of ${n}`);
+      slide.classList.toggle('is-active', i === 0);
+      slide.inert = i !== 0;
     });
 
-    // Mouse drag. Touch and trackpads already scroll natively.
-    if (!finePointer) return;
-    let dragging = false;
-    let moved = false;
-    let startX = 0;
-    let startLeft = 0;
+    const running = () => !stopped && holds.size === 0;
 
-    const release = () => track.classList.remove('is-dragging');
+    function sync() {
+      root.classList.toggle('is-held', !running());
+      // Changes are announced only while the visitor is moving through the reviews themselves.
+      stage.setAttribute('aria-live', running() ? 'off' : 'polite');
+    }
 
-    track.addEventListener('pointerdown', (event) => {
-      if (event.pointerType !== 'mouse' || event.button !== 0) return;
-      dragging = true;
-      moved = false;
-      startX = event.clientX;
-      startLeft = track.scrollLeft;
-      track.classList.add('is-dragging');
-      track.setPointerCapture(event.pointerId);
-    });
+    // The progress line is the timer: when its animation ends, the next review comes in.
+    function restartTimer() {
+      if (!autoplay) return;
+      root.classList.remove('is-playing');
+      void timer.offsetWidth;
+      root.classList.add('is-playing');
+    }
 
-    track.addEventListener('pointermove', (event) => {
-      if (!dragging) return;
-      const dx = event.clientX - startX;
-      if (Math.abs(dx) > 3) moved = true;
-      track.scrollLeft = startLeft - dx;
-    });
+    const settle = (els) => gsap.set(els, { clearProps: 'opacity,visibility,transform' });
 
-    const endDrag = () => {
-      if (!dragging) return;
-      dragging = false;
-      // Settle on the nearest card, then hand control back to scroll snapping.
-      const s = step();
-      track.scrollTo({ left: Math.round(track.scrollLeft / s) * s, behavior });
-      if ('onscrollend' in window) track.addEventListener('scrollend', release, { once: true });
-      else setTimeout(release, 600);
-    };
-    track.addEventListener('pointerup', endDrag);
-    track.addEventListener('pointercancel', endDrag);
-    track.addEventListener(
-      'click',
-      (event) => {
-        if (moved) {
-          event.preventDefault();
-          event.stopPropagation();
+    function show(to, direction) {
+      const from = index;
+      index = (to + n) % n;
+      if (index === from) return;
+      const outgoing = slides[from];
+      const incoming = slides[index];
+      count.textContent = `${index + 1} / ${n}`;
+
+      slides.forEach((slide) => {
+        slide.inert = slide !== incoming;
+        if (slide === outgoing || slide === incoming) return;
+        // Still leaving after an earlier, quicker click.
+        if (motion) {
+          gsap.killTweensOf([slide, ...slide.children]);
+          settle([slide, ...slide.children]);
         }
-      },
-      true
-    );
+        slide.classList.remove('is-active');
+      });
+
+      incoming.classList.add('is-active');
+
+      if (motion) {
+        gsap.killTweensOf([outgoing, ...outgoing.children, incoming, ...incoming.children]);
+        settle(incoming);
+        // The old words lift away; the new ones rise in from the side you're heading.
+        gsap.to(outgoing, {
+          autoAlpha: 0,
+          y: -20 * direction,
+          duration: 0.45,
+          ease: 'power2.out',
+          onComplete: () => {
+            outgoing.classList.remove('is-active');
+            settle([outgoing, ...outgoing.children]);
+          },
+        });
+        gsap.fromTo(
+          incoming.children,
+          { autoAlpha: 0, y: 32 * direction },
+          { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, delay: 0.25, clearProps: 'opacity,visibility,transform' }
+        );
+      } else {
+        outgoing.classList.remove('is-active');
+      }
+
+      restartTimer();
+    }
+
+    timer.addEventListener('animationend', () => show(index + 1, 1));
+    root.querySelector('[data-quote-prev]').addEventListener('click', () => show(index - 1, -1));
+    root.querySelector('[data-quote-next]').addEventListener('click', () => show(index + 1, 1));
+
+    toggle.addEventListener('click', () => {
+      stopped = !stopped;
+      toggle.classList.toggle('is-stopped', stopped);
+      toggleLabel.textContent = stopped ? 'Play reviews' : 'Pause reviews';
+      sync();
+    });
+
+    // Swipe on touch screens.
+    let startX = null;
+    stage.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse') startX = event.clientX;
+    });
+    stage.addEventListener('pointerup', (event) => {
+      if (startX === null) return;
+      const dx = event.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    });
+
+    // Rest while someone points at or tabs into the reviews, or while they are out of sight.
+    const hold = (reason, on) => {
+      if (on) holds.add(reason);
+      else holds.delete(reason);
+      sync();
+    };
+    if (finePointer) {
+      root.addEventListener('pointerenter', () => hold('pointer', true));
+      root.addEventListener('pointerleave', () => hold('pointer', false));
+    }
+    root.addEventListener('focusin', (event) => hold('focus', event.target.matches(':focus-visible')));
+    root.addEventListener('focusout', (event) => {
+      if (!root.contains(event.relatedTarget)) hold('focus', false);
+    });
+    new IntersectionObserver(([entry]) => hold('offscreen', !entry.isIntersecting), { threshold: 0.3 }).observe(root);
+    document.addEventListener('visibilitychange', () => hold('hidden', document.hidden));
+
+    sync();
+    restartTimer();
   }
 
-  /* ---------- "Enquire about this home" preselects it in the form ---------- */
+  /* ---------- "Enquire" on a home starts the message for you ---------- */
 
   function initEnquireLinks() {
-    const select = document.getElementById('enquiry-home');
-    if (!select) return;
+    const message = document.getElementById('enquiry-message');
+    if (!message) return;
     document.querySelectorAll('[data-enquire]').forEach((link) => {
       link.addEventListener('click', () => {
-        select.value = link.dataset.enquire;
-        select.dispatchEvent(new Event('change', { bubbles: true }));
+        const line = `I’m interested in ${link.dataset.enquire}.`;
+        const current = message.value.trim();
+        // Only fill an empty box, or swap the home in a line we wrote earlier.
+        if (!current || current === message.dataset.prefill) {
+          message.value = line;
+          message.dataset.prefill = line;
+        }
       });
     });
   }
 
-  /* ---------- Cursor label over galleries and the review track ---------- */
+  /* ---------- Cursor label over the home photos ---------- */
 
   function initCursor() {
     if (!motion || !finePointer) return;
@@ -546,9 +555,52 @@
       });
     });
 
-    // Framed photos: wipe upward and settle from a slight zoom.
+    // Cover: while the welcome note slides up over it, the photo drifts closer
+    // and dims, and the headline lifts away ahead of the paper.
+    if (document.querySelector('.hero')) {
+      const over = { trigger: '.welcome', start: 'top bottom', end: 'top top', scrub: true };
+      gsap.to('.hero__media', { scale: 1.08, opacity: 0.4, ease: 'none', scrollTrigger: over });
+      gsap.to('.hero__content', { yPercent: -12, autoAlpha: 0, ease: 'none', scrollTrigger: { ...over, end: 'top 35%' } });
+    }
+
+    // The opening lines about the homes brighten word by word as you read down.
+    const words = document.querySelector('[data-words]');
+    if (words) {
+      SplitText.create(words, {
+        type: 'words',
+        wordsClass: 'word',
+        onSplit: (self) =>
+          gsap.fromTo(
+            self.words,
+            { opacity: 0.18 },
+            {
+              opacity: 1,
+              ease: 'none',
+              stagger: 0.12,
+              scrollTrigger: { trigger: words, start: 'top 82%', end: 'bottom 50%', scrub: true },
+            }
+          ),
+      });
+    }
+
+    // Photos that drift a little slower than the page around them.
+    document.querySelectorAll('[data-parallax]').forEach((img) => {
+      gsap.set(img, { scale: 1.12 });
+      gsap.fromTo(
+        img,
+        { yPercent: -5 },
+        {
+          yPercent: 5,
+          ease: 'none',
+          scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+        }
+      );
+    });
+
+    // Photos open upward as they arrive, easing out of a slight zoom.
     document.querySelectorAll('[data-reveal]').forEach((frame) => {
       const img = frame.querySelector('img');
+      const rest = img && img.hasAttribute('data-parallax') ? 1.12 : 1;
       gsap
         .timeline({ scrollTrigger: { trigger: frame, start: 'top 88%', once: true } })
         .fromTo(
@@ -556,100 +608,69 @@
           { clipPath: 'inset(100% 0% 0% 0%)' },
           { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.out', clearProps: 'clipPath' }
         )
-        .fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.8, ease: 'expo.out' }, 0);
+        .fromTo(img, { scale: rest + 0.22 }, { scale: rest, duration: 1.8, ease: 'expo.out' }, 0);
     });
 
-    // Gallery photos: the same wipe, batched so neighbours stagger.
-    gsap.set('.shot', { clipPath: 'inset(100% 0% 0% 0%)' });
-    ScrollTrigger.batch('.shot', {
-      start: 'top 90%',
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.3,
-          ease: 'expo.out',
-          stagger: 0.12,
-          clearProps: 'clipPath',
-        }),
-    });
+    const mm = gsap.matchMedia();
 
-    // Parallax: photos drift inside their frames (frames hold 10% spare each side).
-    document.querySelectorAll('[data-parallax]').forEach((img) => {
-      const amount = Math.min(parseFloat(img.dataset.parallax) || 6, 8);
-      gsap.fromTo(
-        img,
-        { yPercent: -amount },
-        {
-          yPercent: amount,
-          ease: 'none',
-          scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+    // Wide screens: each home slides up over the last, and the one underneath
+    // settles back into the dark. The arriving photo drifts inside its frame.
+    mm.add(STACKED, () => {
+      const homes = gsap.utils.toArray('.home');
+      homes.forEach((home, i) => {
+        if (i > 0) {
+          gsap.fromTo(
+            home.querySelector('.home__zoom img'),
+            { yPercent: -6, scale: 1.15 },
+            {
+              yPercent: 0,
+              scale: 1.15,
+              ease: 'none',
+              scrollTrigger: { trigger: home, start: 'top bottom', end: 'top top', scrub: true },
+            }
+          );
         }
-      );
-    });
-
-    // Hero depth: the masthead lags behind as the cover lifts away.
-    const heroScroll = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
-    gsap.to('.masthead', { yPercent: 22, ease: 'none', scrollTrigger: heroScroll });
-    gsap.to('.hero__figure', { yPercent: -10, ease: 'none', scrollTrigger: { ...heroScroll } });
-
-    // About: the statement fills in word by word as it is read. Words start at
-    // 0.55 opacity so even unread text keeps at least 3:1 contrast.
-    const statement = document.querySelector('[data-scrub]');
-    if (statement) {
-      const { words } = SplitText.create(statement, { type: 'words', wordsClass: 'scrub-word' });
-      gsap.fromTo(
-        words,
-        { opacity: 0.55 },
-        {
-          opacity: 1,
-          ease: 'none',
-          stagger: 0.1,
-          scrollTrigger: { trigger: statement, start: 'top 78%', end: 'bottom 42%', scrub: 0.5 },
-        }
-      );
-    }
-
-    // Amenities ticker: drifts on its own and speeds up with the scroll.
-    const track = document.querySelector('.marquee__track');
-    if (track) {
-      const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 42, repeat: -1 });
-      let boost = 0;
-      const ticker = ScrollTrigger.create({
-        trigger: '.marquee',
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: (self) => (self.isActive ? loop.resume() : loop.pause()),
-        onUpdate: (self) => {
-          boost = Math.min(Math.abs(self.getVelocity()) / 220, 7);
-        },
+        const next = homes[i + 1];
+        if (!next) return;
+        gsap
+          .timeline({ scrollTrigger: { trigger: next, start: 'top bottom', end: 'top top', scrub: true } })
+          .to(home.querySelector('.home__inner'), { scale: 0.92, ease: 'none' }, 0)
+          .to(home.querySelector('.home__shade'), { opacity: 0.55, ease: 'none' }, 0);
       });
-      if (!ticker.isActive) loop.pause();
-      gsap.ticker.add(() => {
-        if (!ticker.isActive) return;
-        boost *= 0.9;
-        loop.timeScale(1 + boost);
+    });
+
+    // Narrower screens: the homes simply follow one another, each photo opening as it arrives.
+    mm.add(`not all and ${STACKED}`, () => {
+      gsap.utils.toArray('.home__media').forEach((media) => {
+        gsap
+          .timeline({ scrollTrigger: { trigger: media, start: 'top 88%', once: true } })
+          .fromTo(
+            media,
+            { clipPath: 'inset(100% 0% 0% 0%)' },
+            { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.out', clearProps: 'clipPath' }
+          )
+          .fromTo(
+            media.querySelector('.home__zoom img'),
+            { scale: 1.3 },
+            { scale: 1, duration: 1.8, ease: 'expo.out', clearProps: 'transform' },
+            0
+          );
       });
+    });
+
+    // Location: the entrance photo opens out to the full width as you walk up to it.
+    const entrance = document.querySelector('[data-expand]');
+    if (entrance) {
+      gsap
+        .timeline({ scrollTrigger: { trigger: entrance, start: 'top bottom', end: 'top 12%', scrub: true } })
+        .fromTo(
+          entrance,
+          { clipPath: 'inset(10% 12% 10% 12% round 24px)' },
+          { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none' },
+          0
+        )
+        .fromTo(entrance.querySelector('img'), { scale: 1.3 }, { scale: 1, ease: 'none' }, 0);
     }
-
-    // Reviews arrive from the right, hinting that the row scrolls sideways.
-    gsap.from('.review', {
-      x: 80,
-      autoAlpha: 0,
-      duration: 1.2,
-      ease: 'expo.out',
-      stagger: 0.08,
-      scrollTrigger: { trigger: '.reviews__track', start: 'top 85%', once: true },
-    });
-
-    // Footer masthead letters rise as the page ends.
-    gsap.from('.footer__letter', {
-      yPercent: 108,
-      duration: 1.4,
-      ease: 'expo.out',
-      stagger: 0.07,
-      scrollTrigger: { trigger: '.footer__mast', start: 'top 95%', once: true },
-    });
 
     window.addEventListener('load', () => ScrollTrigger.refresh());
   }
@@ -681,7 +702,7 @@
     }
 
     const quick = seenThisSession();
-    const cover = document.querySelector('.hero__cover img');
+    const cover = document.querySelector('.hero__img');
     const coverReady =
       cover && !cover.complete
         ? new Promise((resolve) => {
@@ -692,19 +713,15 @@
     const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
 
     // Starting positions, hidden under the loader.
-    gsap.set('.masthead__letter', { yPercent: 108 });
-    gsap.set('.hero__cover', { clipPath: 'inset(100% 0% 0% 0%)' });
-    gsap.set('.hero__cover img', { scale: 1.3 });
+    gsap.set('.hero__line-inner', { yPercent: 112 });
+    gsap.set('.hero__img', { scale: 1.16 });
     gsap.set('[data-hero-fade]', { autoAlpha: 0, y: 24 });
-    gsap.set('.seal', { autoAlpha: 0, scale: 0.7, rotate: -40 });
     gsap.set('.nav__inner', { autoAlpha: 0, y: -16 });
 
-    const count = preloader.querySelector('.preloader__count');
     const bar = preloader.querySelector('.preloader__bar > span');
     const logoFill = preloader.querySelector('.preloader__logo-fill');
     const progress = { value: 0 };
     const draw = () => {
-      count.textContent = String(Math.round(progress.value));
       bar.style.transform = `scaleX(${progress.value / 100})`;
       logoFill.style.clipPath = `inset(0 ${100 - progress.value}% 0 0)`;
     };
@@ -714,42 +731,41 @@
       Promise.race([Promise.all([coverReady, fontsReady]), wait(4000)]),
     ]);
 
-    // Fonts are in, so lines can be measured now.
-    const title = SplitText.create('.hero__title', { type: 'lines', mask: 'lines', linesClass: 'split-line' });
-    gsap.set(title.lines, { yPercent: 108 });
+    // Fonts are in, so heading lines can be measured now.
     initScrollMotion();
 
     await gsap.to(progress, { value: 100, duration: 0.25, ease: 'power1.out', onUpdate: draw });
 
+    // The loader lifts like a blind; the room is underneath, already lit.
     gsap
-      .timeline({
-        onComplete: () => {
-          title.revert();
-          gsap.set('.hero__cover', { clearProps: 'clipPath' });
-          finish();
-        },
-      })
-      .to(preloader.querySelector('.preloader__inner'), { yPercent: -40, autoAlpha: 0, duration: 0.5, ease: 'power3.in' })
-      .to([count, bar.parentElement], { autoAlpha: 0, duration: 0.35 }, 0)
+      .timeline({ onComplete: finish })
+      .to(preloader.querySelector('.preloader__inner'), { yPercent: -30, autoAlpha: 0, duration: 0.6, ease: 'power2.out' })
+      .to(bar.parentElement, { autoAlpha: 0, duration: 0.35 }, 0)
       .fromTo(
         preloader,
         { clipPath: 'inset(0% 0% 0% 0%)' },
-        { clipPath: 'inset(0% 0% 100% 0%)', duration: 1, ease: 'expo.inOut' },
+        {
+          clipPath: 'inset(0% 0% 100% 0%)',
+          duration: 1.1,
+          ease: 'expo.inOut',
+          // Gone from view: let clicks through while the headline finishes rising.
+          onComplete: () => {
+            preloader.style.pointerEvents = 'none';
+          },
+        },
         0.15
       )
-      .add(heroIn(title), 0.55);
+      .add(heroIn(), 0.45);
   }
 
-  function heroIn(title) {
+  // The photo settles from a slight zoom while the headline rises line by line.
+  function heroIn() {
     return gsap
       .timeline({ defaults: { ease: 'expo.out' } })
-      .to('.masthead__letter', { yPercent: 0, duration: 1.4, stagger: 0.06 }, 0)
-      .to('.hero__cover', { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5 }, 0.15)
-      .to('.hero__cover img', { scale: 1, duration: 2 }, 0.15)
-      .to(title.lines, { yPercent: 0, duration: 1.2, stagger: 0.08 }, 0.4)
-      .to('[data-hero-fade]', { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.08 }, 0.55)
-      .to('.nav__inner', { autoAlpha: 1, y: 0, duration: 0.9 }, 0.5)
-      .to('.seal', { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.2 }, 0.8);
+      .to('.hero__img', { scale: 1, duration: 2.8 }, 0)
+      .to('.hero__line-inner', { yPercent: 0, duration: 1.3, stagger: 0.1 }, 0.35)
+      .to('[data-hero-fade]', { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.1 }, 0.85)
+      .to('.nav__inner', { autoAlpha: 1, y: 0, duration: 1 }, 0.6);
   }
 
   /* ---------- Start ---------- */
@@ -761,9 +777,8 @@
   initSmoothScroll();
   initAnchors();
   initNav();
-  initMenu();
   initLightbox();
-  initReviews();
+  initQuotes();
   initEnquireLinks();
   initCursor();
   initMagnetic();

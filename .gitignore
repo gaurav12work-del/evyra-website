@@ -1,6 +1,7 @@
-# Local tooling state (design-check plugin cache and settings, browser test output)
+# Local tooling state (design-check plugin cache and settings, browser test output, Netlify link)
 .impeccable/
 .playwright-mcp/
+.netlify/
 
 # OS clutter
 .DS_Store
